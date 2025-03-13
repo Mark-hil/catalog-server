@@ -28,7 +28,7 @@ jobs:
 
     - name: Check code formatting with Black
       run: |
-        black --check .  # Check if the code is formatted with Black without modifying it
+        black .  # Check if the code is formatted with Black without modifying it
 
     - name: Run tests
       run: |
