@@ -1,0 +1,64 @@
+name: FastAPI CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Runs the pipeline on push to the main branch
+  pull_request:
+    branches:
+      - main  # Runs the pipeline on pull requests targeting the main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9  # Set the Python version to use
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Install all dependencies including flake8 and black
+
+    - name: Check code formatting with Black
+      run: |
+        black --check .  # Check if the code is formatted with Black without modifying it
+
+    - name: Run tests
+      run: |
+        # pytest  # Run your tests using pytest or any other tool
+
+    - name: Lint code with flake8
+      run: |
+        # flake8 .  # Lint the codebase after checking code formatting with Black
+
+  # You can add a deployment job after the tests if you want to deploy after successful tests
+  deploy:
+    needs: test  # Deploy only if the test job is successful
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Deploy the app (example)
+      run: |
+        # Add your deployment logic here, for example:
+        # If you're deploying to AWS Lambda, use the AWS CLI
+        # or to a Docker container, use docker commands.
+        echo "Deploying the app..."
